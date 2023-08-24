@@ -21,7 +21,6 @@ env:
   TESTSTAT_VERSION: v0.1.3
   WINDOWS_BASE_IMAGE: mcr.microsoft.com/windows/servercore
   WINDOWS_BASE_TAG_2019: ltsc2019
-  WINDOWS_BASE_TAG_2022: ltsc2022
   TEST_IMAGE_NAME: moby:test
   TEST_CTN_NAME: moby
   DOCKER_BUILDKIT: 0

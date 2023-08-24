@@ -5,17 +5,11 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  schedule:
-    - cron: '0 10 * * *'
+  push:
   workflow_dispatch:
 
 jobs:
-  validate-dco:
-    uses: ./.github/workflows/.dco.yml
-
   run:
-    needs:
-      - validate-dco
     uses: ./.github/workflows/.windows.yml
     with:
       os: windows-2019

@@ -4,7 +4,6 @@ name: .windows
 # TODO: hide reusable workflow from the UI. Tracked in https://github.com/community/community/discussions/12025
 
 on:
-  push:
   workflow_call:
     inputs:
       os:
@@ -50,7 +49,6 @@ jobs:
       -
         name: Init
         run: |
-          inputs.os = windows-2019
           New-Item -ItemType "directory" -Path "${{ github.workspace }}\go-build"
           New-Item -ItemType "directory" -Path "${{ github.workspace }}\go\pkg\mod"
           If ("${{ inputs.os }}" -eq "windows-2019") {

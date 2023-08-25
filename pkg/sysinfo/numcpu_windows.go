@@ -4,13 +4,17 @@ import (
 	"unsafe"
 
 	"golang.org/x/sys/windows"
+	"runtime"
 )
 
 var (
 	kernel32               = windows.NewLazySystemDLL("kernel32.dll")
 	getCurrentProcess      = kernel32.NewProc("GetCurrentProcess")
 	getProcessAffinityMask = kernel32.NewProc("GetProcessAffinityMask")
+	getActiveProcessorCount = kernel32.NewProc("GetActiveProcessorCount")
 )
+
+const ALL_PROCESSOR_GROUPS = 0xFFFF
 
 // Returns bit count of 1, used by NumCPU
 func popcnt(x uint64) (n byte) {
@@ -23,14 +27,18 @@ func popcnt(x uint64) (n byte) {
 }
 
 func numCPU() int {
-	// Gets the affinity mask for a process
-	var mask, sysmask uintptr
-	currentProcess, _, _ := getCurrentProcess.Call()
-	ret, _, _ := getProcessAffinityMask.Call(currentProcess, uintptr(unsafe.Pointer(&mask)), uintptr(unsafe.Pointer(&sysmask)))
-	if ret == 0 {
-		return 0
+	if amount, _, _ := getActiveProcessorCount.Call(uintptr(ALL_PROCESSOR_GROUPS)); amount != 0 {
+		return int(amount)
 	}
-	// For every available thread a bit is set in the mask.
-	ncpu := int(popcnt(uint64(mask)))
-	return ncpu
+	return runtime.NumCPU()
+	// Gets the affinity mask for a process
+	// var mask, sysmask uintptr
+	// currentProcess, _, _ := getCurrentProcess.Call()
+	// ret, _, _ := getProcessAffinityMask.Call(currentProcess, uintptr(unsafe.Pointer(&mask)), uintptr(unsafe.Pointer(&sysmask)))
+	// if ret == 0 {
+	// 	return 0
+	// }
+	// // For every available thread a bit is set in the mask.
+	// ncpu := int(popcnt(uint64(mask)))
+	// return ncpu
 }

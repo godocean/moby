@@ -84,6 +84,7 @@ jobs:
         name: Build binaries
         run: |
           & docker run --name ${{ env.TEST_CTN_NAME }} -e "DOCKER_GITCOMMIT=${{ github.sha }}" `
+              -e "VERSION=${{ env.VERSION }}" -e "DOCKERCLI_VERSION=${{ env.DOCKERCLI_VERSION }}" `
               -v "${{ github.workspace }}\go-build:C:\Users\ContainerAdministrator\AppData\Local\go-build" `
               -v "${{ github.workspace }}\go\pkg\mod:C:\gopath\pkg\mod" `
               ${{ env.TEST_IMAGE_NAME }} hack\make.ps1 -Daemon -Client

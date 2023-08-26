@@ -16,7 +16,6 @@ on:
 
 env:
   VERSION: "24.0.5-wincpu-bugfix"
-  DOCKERCLI_VERSION: "24.0.5"
   GO_VERSION: "1.20.6"
   GOTESTLIST_VERSION: v0.3.1
   TESTSTAT_VERSION: v0.1.3
@@ -84,7 +83,7 @@ jobs:
         name: Build binaries
         run: |
           & docker run --name ${{ env.TEST_CTN_NAME }} -e "DOCKER_GITCOMMIT=${{ github.sha }}" `
-              -e "VERSION=${{ env.VERSION }}" -e "DOCKERCLI_VERSION=${{ env.DOCKERCLI_VERSION }}" `
+              -e "VERSION=${{ env.VERSION }}" `
               -v "${{ github.workspace }}\go-build:C:\Users\ContainerAdministrator\AppData\Local\go-build" `
               -v "${{ github.workspace }}\go\pkg\mod:C:\gopath\pkg\mod" `
               ${{ env.TEST_IMAGE_NAME }} hack\make.ps1 -Daemon -Client

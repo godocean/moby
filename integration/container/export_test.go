@@ -27,7 +27,7 @@ func TestExportContainerAndImportImage(t *testing.T) {
 	ctx := context.Background()
 
 	cID := container.Run(ctx, t, client, container.WithCmd("true"))
-	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(1000*time.Millisecond))
 
 	reference := "repo/" + strings.ToLower(t.Name()) + ":v1"
 	exportResp, err := client.ContainerExport(ctx, cID)

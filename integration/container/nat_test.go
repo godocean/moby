@@ -76,7 +76,7 @@ func TestNetworkLoopbackNat(t *testing.T) {
 		container.WithNetworkMode("container:"+serverContainerID),
 	)
 
-	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(1000*time.Millisecond))
 
 	body, err := client.ContainerLogs(ctx, cID, types.ContainerLogsOptions{
 		ShowStdout: true,
@@ -110,7 +110,7 @@ func startServerContainer(t *testing.T, msg string, port int) string {
 			}
 		})
 
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
 
 	return cID
 }

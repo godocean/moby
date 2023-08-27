@@ -53,7 +53,7 @@ func TestCheckpoint(t *testing.T) {
 	cID := container.Run(ctx, t, client, container.WithMount(mnt))
 	poll.WaitOn(t,
 		container.IsInState(ctx, client, cID, "running"),
-		poll.WithDelay(100*time.Millisecond),
+		poll.WithDelay(1000*time.Millisecond),
 	)
 
 	cptOpt := types.CheckpointCreateOptions{
@@ -119,7 +119,7 @@ func TestCheckpoint(t *testing.T) {
 
 	poll.WaitOn(t,
 		container.IsInState(ctx, client, cID, "exited"),
-		poll.WithDelay(100*time.Millisecond),
+		poll.WithDelay(1000*time.Millisecond),
 	)
 
 	inspect, err = client.ContainerInspect(ctx, cID)

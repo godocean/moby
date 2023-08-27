@@ -24,7 +24,7 @@ func testRunWithCgroupNs(t *testing.T, daemonNsMode string, containerOpts ...fun
 	defer d.Stop(t)
 
 	cID := container.Run(ctx, t, client, containerOpts...)
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
 
 	daemonCgroup := d.CgroupNamespace(t)
 	containerCgroup := container.GetContainerNS(ctx, t, client, cID, "cgroup")
@@ -133,7 +133,7 @@ func TestCgroupNamespacesRunOlderClient(t *testing.T) {
 	defer d.Stop(t)
 
 	cID := container.Run(ctx, t, client)
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
 
 	daemonCgroup := d.CgroupNamespace(t)
 	containerCgroup := container.GetContainerNS(ctx, t, client, cID, "cgroup")

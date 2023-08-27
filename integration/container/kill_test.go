@@ -24,12 +24,12 @@ func TestKillContainerInvalidSignal(t *testing.T) {
 	err := client.ContainerKill(ctx, id, "0")
 	assert.ErrorContains(t, err, "Error response from daemon:")
 	assert.ErrorContains(t, err, "nvalid signal: 0") // match "(I|i)nvalid" case-insensitive to allow testing against older daemons.
-	poll.WaitOn(t, container.IsInState(ctx, client, id, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, id, "running"), poll.WithDelay(1000*time.Millisecond))
 
 	err = client.ContainerKill(ctx, id, "SIG42")
 	assert.ErrorContains(t, err, "Error response from daemon:")
 	assert.ErrorContains(t, err, "nvalid signal: SIG42") // match "(I|i)nvalid" case-insensitive to allow testing against older daemons.
-	poll.WaitOn(t, container.IsInState(ctx, client, id, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, id, "running"), poll.WithDelay(1000*time.Millisecond))
 }
 
 func TestKillContainer(t *testing.T) {
@@ -115,7 +115,7 @@ func TestKillWithStopSignalAndRestartPolicies(t *testing.T) {
 			err := client.ContainerKill(ctx, id, "TERM")
 			assert.NilError(t, err)
 
-			poll.WaitOn(t, container.IsInState(ctx, client, id, tc.status), poll.WithDelay(100*time.Millisecond))
+			poll.WaitOn(t, container.IsInState(ctx, client, id, tc.status), poll.WithDelay(1000*time.Millisecond))
 		})
 	}
 }
@@ -152,11 +152,11 @@ func TestKillDifferentUserContainer(t *testing.T) {
 	id := container.Run(ctx, t, client, func(c *container.TestContainerConfig) {
 		c.Config.User = "daemon"
 	})
-	poll.WaitOn(t, container.IsInState(ctx, client, id, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, id, "running"), poll.WithDelay(1000*time.Millisecond))
 
 	err := client.ContainerKill(ctx, id, "SIGKILL")
 	assert.NilError(t, err)
-	poll.WaitOn(t, container.IsInState(ctx, client, id, "exited"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, id, "exited"), poll.WithDelay(1000*time.Millisecond))
 }
 
 func TestInspectOomKilledTrue(t *testing.T) {
@@ -173,7 +173,7 @@ func TestInspectOomKilledTrue(t *testing.T) {
 		c.HostConfig.Resources.Memory = 32 * 1024 * 1024
 	})
 
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "exited"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "exited"), poll.WithDelay(1000*time.Millisecond))
 
 	inspect, err := client.ContainerInspect(ctx, cID)
 	assert.NilError(t, err)
@@ -189,7 +189,7 @@ func TestInspectOomKilledFalse(t *testing.T) {
 
 	cID := container.Run(ctx, t, client, container.WithCmd("sh", "-c", "echo hello world"))
 
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "exited"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "exited"), poll.WithDelay(1000*time.Millisecond))
 
 	inspect, err := client.ContainerInspect(ctx, cID)
 	assert.NilError(t, err)

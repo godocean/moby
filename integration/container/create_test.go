@@ -251,7 +251,7 @@ func TestCreateWithCustomMaskedPaths(t *testing.T) {
 		err = client.ContainerStart(ctx, c.ID, types.ContainerStartOptions{})
 		assert.NilError(t, err)
 
-		poll.WaitOn(t, ctr.IsInState(ctx, client, c.ID, "exited"), poll.WithDelay(100*time.Millisecond))
+		poll.WaitOn(t, ctr.IsInState(ctx, client, c.ID, "exited"), poll.WithDelay(1000*time.Millisecond))
 
 		checkInspect(t, ctx, name, tc.expected)
 	}
@@ -330,7 +330,7 @@ func TestCreateWithCustomReadonlyPaths(t *testing.T) {
 		err = client.ContainerStart(ctx, c.ID, types.ContainerStartOptions{})
 		assert.NilError(t, err)
 
-		poll.WaitOn(t, ctr.IsInState(ctx, client, c.ID, "exited"), poll.WithDelay(100*time.Millisecond))
+		poll.WaitOn(t, ctr.IsInState(ctx, client, c.ID, "exited"), poll.WithDelay(1000*time.Millisecond))
 
 		checkInspect(t, ctx, name, tc.expected)
 	}

@@ -55,7 +55,7 @@ func TestRenameStoppedContainer(t *testing.T) {
 
 	oldName := "first_name" + t.Name()
 	cID := container.Run(ctx, t, client, container.WithName(oldName), container.WithCmd("sh"))
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "exited"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "exited"), poll.WithDelay(1000*time.Millisecond))
 
 	inspect, err := client.ContainerInspect(ctx, cID)
 	assert.NilError(t, err)
@@ -77,7 +77,7 @@ func TestRenameRunningContainerAndReuse(t *testing.T) {
 
 	oldName := "first_name" + t.Name()
 	cID := container.Run(ctx, t, client, container.WithName(oldName))
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
 
 	newName := "new_name" + stringid.GenerateRandomID()
 	err := client.ContainerRename(ctx, oldName, newName)
@@ -91,7 +91,7 @@ func TestRenameRunningContainerAndReuse(t *testing.T) {
 	assert.Check(t, is.ErrorContains(err, "No such container: "+oldName))
 
 	cID = container.Run(ctx, t, client, container.WithName(oldName))
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
 
 	inspect, err = client.ContainerInspect(ctx, cID)
 	assert.NilError(t, err)
@@ -105,7 +105,7 @@ func TestRenameInvalidName(t *testing.T) {
 
 	oldName := "first_name" + t.Name()
 	cID := container.Run(ctx, t, client, container.WithName(oldName))
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
 
 	err := client.ContainerRename(ctx, oldName, "new:invalid")
 	assert.Check(t, is.ErrorContains(err, "Invalid container name"))
@@ -148,7 +148,7 @@ func TestRenameAnonymousContainer(t *testing.T) {
 	err = client.ContainerStart(ctx, container1Name, types.ContainerStartOptions{})
 	assert.NilError(t, err)
 
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
 
 	count := "-c"
 	if testEnv.OSType == "windows" {
@@ -176,7 +176,7 @@ func TestRenameContainerWithSameName(t *testing.T) {
 	oldName := "old" + t.Name()
 	cID := container.Run(ctx, t, client, container.WithName(oldName))
 
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
 	err := client.ContainerRename(ctx, oldName, oldName)
 	assert.Check(t, is.ErrorContains(err, "Renaming a container with the same name"))
 	err = client.ContainerRename(ctx, cID, oldName)
@@ -198,12 +198,12 @@ func TestRenameContainerWithLinkedContainer(t *testing.T) {
 
 	db1Name := "db1" + t.Name()
 	db1ID := container.Run(ctx, t, client, container.WithName(db1Name))
-	poll.WaitOn(t, container.IsInState(ctx, client, db1ID, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, db1ID, "running"), poll.WithDelay(1000*time.Millisecond))
 
 	app1Name := "app1" + t.Name()
 	app2Name := "app2" + t.Name()
 	app1ID := container.Run(ctx, t, client, container.WithName(app1Name), container.WithLinks(db1Name+":/mysql"))
-	poll.WaitOn(t, container.IsInState(ctx, client, app1ID, "running"), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, app1ID, "running"), poll.WithDelay(1000*time.Millisecond))
 
 	err := client.ContainerRename(ctx, app1Name, app2Name)
 	assert.NilError(t, err)

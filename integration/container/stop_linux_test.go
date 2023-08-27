@@ -67,7 +67,7 @@ func TestStopContainerWithTimeout(t *testing.T) {
 			assert.NilError(t, err)
 
 			poll.WaitOn(t, container.IsStopped(ctx, client, id),
-				poll.WithDelay(100*time.Millisecond))
+				poll.WithDelay(1000*time.Millisecond))
 
 			inspect, err := client.ContainerInspect(ctx, id)
 			assert.NilError(t, err)
@@ -86,7 +86,7 @@ func TestDeleteDevicemapper(t *testing.T) {
 
 	id := container.Run(ctx, t, client, container.WithName("foo-"+t.Name()), container.WithCmd("echo"))
 
-	poll.WaitOn(t, container.IsStopped(ctx, client, id), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsStopped(ctx, client, id), poll.WithDelay(1000*time.Millisecond))
 
 	inspect, err := client.ContainerInspect(ctx, id)
 	assert.NilError(t, err)

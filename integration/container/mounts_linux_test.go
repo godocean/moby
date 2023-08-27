@@ -266,7 +266,7 @@ func TestContainerBindMountNonRecursive(t *testing.T) {
 	}
 
 	for _, c := range containers {
-		poll.WaitOn(t, container.IsSuccessful(ctx, client, c), poll.WithDelay(100*time.Millisecond))
+		poll.WaitOn(t, container.IsSuccessful(ctx, client, c), poll.WithDelay(1000*time.Millisecond))
 	}
 }
 
@@ -313,7 +313,7 @@ func TestContainerVolumesMountedAsShared(t *testing.T) {
 	ctx := context.Background()
 	client := testEnv.APIClient()
 	containerID := container.Run(ctx, t, client, container.WithPrivileged(true), container.WithMount(sharedMount), container.WithCmd(bindMountCmd...))
-	poll.WaitOn(t, container.IsSuccessful(ctx, client, containerID), poll.WithDelay(100*time.Millisecond))
+	poll.WaitOn(t, container.IsSuccessful(ctx, client, containerID), poll.WithDelay(1000*time.Millisecond))
 
 	// Make sure a bind mount under a shared volume propagated to host.
 	if mounted, _ := mountinfo.Mounted(tmpDir1Mnt); !mounted {

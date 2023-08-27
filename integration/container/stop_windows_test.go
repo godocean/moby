@@ -58,7 +58,7 @@ func TestStopContainerWithTimeout(t *testing.T) {
 			assert.NilError(t, err)
 
 			poll.WaitOn(t, container.IsStopped(ctx, client, id),
-				poll.WithDelay(100*time.Millisecond))
+				poll.WithDelay(1000*time.Millisecond))
 
 			inspect, err := client.ContainerInspect(ctx, id)
 			assert.NilError(t, err)

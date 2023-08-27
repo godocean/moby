@@ -29,7 +29,7 @@ func TestPause(t *testing.T) {
 	ctx := context.Background()
 
 	cID := container.Run(ctx, t, client)
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
 
 	since := request.DaemonUnixTime(ctx, t, client, testEnv)
 
@@ -61,7 +61,7 @@ func TestPauseFailsOnWindowsServerContainers(t *testing.T) {
 	ctx := context.Background()
 
 	cID := container.Run(ctx, t, client)
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
 
 	err := client.ContainerPause(ctx, cID)
 	assert.Check(t, is.ErrorContains(err, cerrdefs.ErrNotImplemented.Error()))
@@ -76,7 +76,7 @@ func TestPauseStopPausedContainer(t *testing.T) {
 	ctx := context.Background()
 
 	cID := container.Run(ctx, t, client)
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
 
 	err := client.ContainerPause(ctx, cID)
 	assert.NilError(t, err)
@@ -84,7 +84,7 @@ func TestPauseStopPausedContainer(t *testing.T) {
 	err = client.ContainerStop(ctx, cID, containertypes.StopOptions{})
 	assert.NilError(t, err)
 
-	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(100*time.Millisecond))
 }
 
 func getEventActions(t *testing.T, messages <-chan events.Message, errs <-chan error) []string {

@@ -37,7 +37,7 @@ func TestUpdateRestartPolicy(t *testing.T) {
 		timeout = 180 * time.Second
 	}
 
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "exited"), poll.WithDelay(1000*time.Millisecond), poll.WithTimeout(timeout))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "exited"), poll.WithDelay(100*time.Millisecond), poll.WithTimeout(timeout))
 
 	inspect, err := client.ContainerInspect(ctx, cID)
 	assert.NilError(t, err)

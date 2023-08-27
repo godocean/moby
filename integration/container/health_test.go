@@ -31,7 +31,7 @@ func TestHealthCheckWorkdir(t *testing.T) {
 		}
 	})
 
-	poll.WaitOn(t, pollForHealthStatus(ctx, client, cID, types.Healthy), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, pollForHealthStatus(ctx, client, cID, types.Healthy), poll.WithDelay(100*time.Millisecond))
 }
 
 // GitHub #37263
@@ -77,21 +77,21 @@ while true; do sleep 1; done
 
 	ctxPoll, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
-	poll.WaitOn(t, pollForHealthStatus(ctxPoll, client, id, "healthy"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, pollForHealthStatus(ctxPoll, client, id, "healthy"), poll.WithDelay(100*time.Millisecond))
 
 	err := client.ContainerKill(ctx, id, "SIGUSR1")
 	assert.NilError(t, err)
 
 	ctxPoll, cancel = context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
-	poll.WaitOn(t, pollForHealthStatus(ctxPoll, client, id, "unhealthy"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, pollForHealthStatus(ctxPoll, client, id, "unhealthy"), poll.WithDelay(100*time.Millisecond))
 
 	err = client.ContainerKill(ctx, id, "SIGUSR1")
 	assert.NilError(t, err)
 
 	ctxPoll, cancel = context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
-	poll.WaitOn(t, pollForHealthStatus(ctxPoll, client, id, "healthy"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, pollForHealthStatus(ctxPoll, client, id, "healthy"), poll.WithDelay(100*time.Millisecond))
 }
 
 // TestHealthCheckProcessKilled verifies that health-checks exec get killed on time-out.

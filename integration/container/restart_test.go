@@ -128,7 +128,7 @@ func TestDaemonRestartKillContainers(t *testing.T) {
 						startTime := time.Now()
 						ctxPoll, cancel := context.WithTimeout(ctx, 30*time.Second)
 						defer cancel()
-						poll.WaitOn(t, pollForNewHealthCheck(ctxPoll, client, startTime, resp.ID), poll.WithDelay(1000*time.Millisecond))
+						poll.WaitOn(t, pollForNewHealthCheck(ctxPoll, client, startTime, resp.ID), poll.WithDelay(100*time.Millisecond))
 					}
 					// TODO(cpuguy83): test pause states... this seems to be rather undefined currently
 				})

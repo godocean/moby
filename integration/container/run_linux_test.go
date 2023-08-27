@@ -52,7 +52,7 @@ func TestNISDomainname(t *testing.T) {
 		c.Config.Domainname = domainname
 	})
 
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
 
 	inspect, err := client.ContainerInspect(ctx, cID)
 	assert.NilError(t, err)
@@ -96,7 +96,7 @@ func TestHostnameDnsResolution(t *testing.T) {
 		c.HostConfig.NetworkMode = containertypes.NetworkMode(netName)
 	})
 
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
 
 	inspect, err := client.ContainerInspect(ctx, cID)
 	assert.NilError(t, err)
@@ -122,7 +122,7 @@ func TestUnprivilegedPortsAndPing(t *testing.T) {
 		c.Config.User = "1000:1000"
 	})
 
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
 
 	// Check net.ipv4.ping_group_range.
 	res, err := container.Exec(ctx, client, cID, []string{"cat", "/proc/sys/net/ipv4/ping_group_range"})
@@ -170,7 +170,7 @@ func TestPrivilegedHostDevices(t *testing.T) {
 
 	cID := container.Run(ctx, t, client, container.WithPrivileged(true))
 
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
 
 	// Check test device.
 	res, err := container.Exec(ctx, client, cID, []string{"ls", devTest})
@@ -205,7 +205,7 @@ func TestRunConsoleSize(t *testing.T) {
 		container.WithConsoleSize(57, 123),
 	)
 
-	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(100*time.Millisecond))
 
 	out, err := client.ContainerLogs(ctx, cID, types.ContainerLogsOptions{ShowStdout: true})
 	assert.NilError(t, err)
@@ -259,7 +259,7 @@ func TestRunWithAlternativeContainerdShim(t *testing.T) {
 		container.WithRuntime("io.containerd.realfake.v42"),
 	)
 
-	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(100*time.Millisecond))
 
 	out, err := client.ContainerLogs(ctx, cID, types.ContainerLogsOptions{ShowStdout: true})
 	assert.NilError(t, err)
@@ -279,7 +279,7 @@ func TestRunWithAlternativeContainerdShim(t *testing.T) {
 		container.WithCmd("sh", "-c", `echo 'Hello, world!'`),
 	)
 
-	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsStopped(ctx, client, cID), poll.WithDelay(100*time.Millisecond))
 
 	out, err = client.ContainerLogs(ctx, cID, types.ContainerLogsOptions{ShowStdout: true})
 	assert.NilError(t, err)

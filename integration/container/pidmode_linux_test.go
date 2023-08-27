@@ -26,12 +26,12 @@ func TestPidHost(t *testing.T) {
 	cID := container.Run(ctx, t, client, func(c *container.TestContainerConfig) {
 		c.HostConfig.PidMode = "host"
 	})
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
 	cPid := container.GetContainerNS(ctx, t, client, cID, "pid")
 	assert.Assert(t, hostPid == cPid)
 
 	cID = container.Run(ctx, t, client)
-	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(1000*time.Millisecond))
+	poll.WaitOn(t, container.IsInState(ctx, client, cID, "running"), poll.WithDelay(100*time.Millisecond))
 	cPid = container.GetContainerNS(ctx, t, client, cID, "pid")
 	assert.Assert(t, hostPid != cPid)
 }

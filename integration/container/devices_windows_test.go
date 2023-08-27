@@ -110,7 +110,7 @@ func TestWindowsDevices(t *testing.T) {
 
 			assert.NilError(t, err)
 
-			poll.WaitOn(t, container.IsInState(ctx, client, id, "running"), poll.WithDelay(1000*time.Millisecond))
+			poll.WaitOn(t, container.IsInState(ctx, client, id, "running"), poll.WithDelay(100*time.Millisecond))
 
 			// /Windows/System32/HostDriverStore is mounted from the host when class GUID 5B45201D-F2F2-4F3B-85BB-30FF1F953599
 			// is mounted. See `C:\windows\System32\containers\devices.def` on a Windows host for (slightly more) details.

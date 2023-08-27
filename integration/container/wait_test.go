@@ -42,7 +42,7 @@ func TestWaitNonBlocked(t *testing.T) {
 			t.Parallel()
 			ctx := context.Background()
 			containerID := container.Run(ctx, t, cli, container.WithCmd("sh", "-c", tc.cmd))
-			poll.WaitOn(t, container.IsInState(ctx, cli, containerID, "exited"), poll.WithTimeout(30*time.Second), poll.WithDelay(1000*time.Millisecond))
+			poll.WaitOn(t, container.IsInState(ctx, cli, containerID, "exited"), poll.WithTimeout(30*time.Second), poll.WithDelay(100*time.Millisecond))
 
 			waitResC, errC := cli.ContainerWait(ctx, containerID, "")
 			select {
@@ -84,7 +84,7 @@ func TestWaitBlocked(t *testing.T) {
 			t.Parallel()
 			ctx := context.Background()
 			containerID := container.Run(ctx, t, cli, container.WithCmd("sh", "-c", tc.cmd))
-			poll.WaitOn(t, container.IsInState(ctx, cli, containerID, "running"), poll.WithTimeout(30*time.Second), poll.WithDelay(1000*time.Millisecond))
+			poll.WaitOn(t, container.IsInState(ctx, cli, containerID, "running"), poll.WithTimeout(30*time.Second), poll.WithDelay(100*time.Millisecond))
 
 			waitResC, errC := cli.ContainerWait(ctx, containerID, "")
 
@@ -212,7 +212,7 @@ func TestWaitRestartedContainer(t *testing.T) {
 			)
 			defer cli.ContainerRemove(ctx, containerID, types.ContainerRemoveOptions{Force: true})
 
-			poll.WaitOn(t, container.IsInState(ctx, cli, containerID, "running"), poll.WithTimeout(30*time.Second), poll.WithDelay(1000*time.Millisecond))
+			poll.WaitOn(t, container.IsInState(ctx, cli, containerID, "running"), poll.WithTimeout(30*time.Second), poll.WithDelay(100*time.Millisecond))
 
 			// Container is running now, wait for exit
 			waitResC, errC := cli.ContainerWait(ctx, containerID, tc.waitCond)
